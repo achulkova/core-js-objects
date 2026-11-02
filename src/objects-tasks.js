@@ -167,13 +167,19 @@ function makeWord(lettersObject) {
 function sellTickets(queue) {
   let bills25 = 0;
   let bills50 = 0;
+  let canSell = true;
 
-  for (const bill of queue) {
+  queue.forEach((bill) => {
+    if (!canSell) {
+      return;
+    }
+
     if (bill === 25) {
       bills25 += 1;
     } else if (bill === 50) {
       if (bills25 === 0) {
-        return false;
+        canSell = false;
+        return;
       }
       bills25 -= 1;
       bills50 += 1;
@@ -184,12 +190,12 @@ function sellTickets(queue) {
       } else if (bills25 >= 3) {
         bills25 -= 3;
       } else {
-        return false;
+        canSell = false;
       }
     }
-  }
+  });
 
-  return true;
+  return canSell;
 }
 
 /**
